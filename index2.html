@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet Map with Moving Marker</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+  </head>
+  <body>
+    <div id="map" style="height: 400px"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      // Initialize the map
+      var map = L.map("map").setView([51.505, -0.09], 13);
+
+      // Create a TileLayer to display the map tiles
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map
+      );
+
+      // Create a marker with the initial position
+      var marker = L.marker([51.505, -0.09]).addTo(map);
+
+      // Function to move the marker to a new location
+      function moveMarkerTo(newLat, newLng) {
+        var xx = map.getCenter();
+
+        marker.setLatLng([newLat, newLng]);
+      }
+
+      // Example: Move the marker to (40.7128, -74.0060) after 3 seconds
+      setTimeout(function () {
+        moveMarkerTo(51.515, -0.09);
+      }, 3000);
+    </script>
+  </body>
+</html>

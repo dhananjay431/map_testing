@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Animate a marker</title>
+    <meta
+      property="og:description"
+      content="Animate the position of a marker by updating its location on each frame."
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@3.2.1/dist/maplibre-gl.css"
+    />
+    <script src="https://unpkg.com/maplibre-gl@3.2.1/dist/maplibre-gl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body,
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const map = new maplibregl.Map({
+        container: "map",
+        style:
+          "https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+        center: [0, 0],
+        zoom: 2,
+      });
+
+      const marker = new maplibregl.Marker();
+
+      var a = 19.5877573,
+        b = 74.202739,
+        c = 28.6663843,
+        d = 77.1062144;
+      function animateMarker(timestamp) {
+        setInterval(function () {
+          var newLatLng = moveLocation(a, b, c, d, 80);
+
+          marker.setLngLat([newLatLng.long, newLatLng.lat]);
+          marker.addTo(map);
+          a = JSON.parse(JSON.stringify(c));
+          b = JSON.parse(JSON.stringify(d));
+          c = newLatLng.lat;
+          d = newLatLng.long;
+        }, 10);
+      }
+
+      // Start the animation.
+      animateMarker(new Date().getTime());
+      ////////////////////////////////////////////////
+      function haversineDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = degToRad(lat2 - lat1);
+        const dLon = degToRad(lon2 - lon1);
+
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(degToRad(lat1)) *
+            Math.cos(degToRad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c;
+
+        return distance;
+      }
+
+      // Function to convert degrees to radians
+      function degToRad(degrees) {
+        return degrees * (Math.PI / 180);
+      }
+
+      // Function to move from location A to location B
+      function moveLocation(latA, lonA, latB, lonB, distanceToMove) {
+        const bearing = calculateBearing(latA, lonA, latB, lonB);
+        const distanceInKm = distanceToMove / 1000; // Assuming distanceToMove is in meters, convert to kilometers
+        const R = 6371; // Radius of the Earth in kilometers
+
+        const lat1 = degToRad(latA);
+        const lon1 = degToRad(lonA);
+
+        const lat2 = Math.asin(
+          Math.sin(lat1) * Math.cos(distanceInKm / R) +
+            Math.cos(lat1) *
+              Math.sin(distanceInKm / R) *
+              Math.cos(degToRad(bearing))
+        );
+
+        const lon2 =
+          lon1 +
+          Math.atan2(
+            Math.sin(degToRad(bearing)) *
+              Math.sin(distanceInKm / R) *
+              Math.cos(lat1),
+            Math.cos(distanceInKm / R) - Math.sin(lat1) * Math.sin(lat2)
+          );
+
+        return {
+          lat: radToDeg(lat2),
+          long: radToDeg(lon2),
+        };
+      }
+
+      // Function to calculate bearing between two points
+      function calculateBearing(lat1, lon1, lat2, lon2) {
+        const dLon = degToRad(lon2 - lon1);
+        const y = Math.sin(dLon) * Math.cos(degToRad(lat2));
+        const x =
+          Math.cos(degToRad(lat1)) * Math.sin(degToRad(lat2)) -
+          Math.sin(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.cos(dLon);
+
+        let bearing = radToDeg(Math.atan2(y, x));
+        bearing = (bearing + 360) % 360; // Normalize the bearing to a value between 0 and 360 degrees
+        return bearing;
+      }
+
+      // Function to convert radians to degrees
+      function radToDeg(radians) {
+        return radians * (180 / Math.PI);
+      }
+    </script>
+  </body>
+</html>

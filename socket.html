@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+  </head>
+  <body>
+    <script>
+      //var socket = io.connect("https://soc.oneqlik.in/gps", {
+
+      var _socket = io.connect(
+        "http://wetrack.pk/gps?userId=6459d678280838556b7d6fe5",
+        {
+          secure: false,
+          rejectUnauthorized: false,
+          transports: ["websocket", "polling"],
+          upgrade: false,
+        }
+      );
+
+      _socket.on("connect", (socket) => {
+        console.log("connected...");
+      });
+
+      var date = new Date().setHours(0, 0, 0, 0);
+      _socket.emit("initLive", "868805065986831", date);
+      _socket.on("868805065986831", function (msg, initData, deviceInfo) {
+        console.log("a user connected 41", msg, initData, deviceInfo);
+      });
+      //sec_last_location
+      //last_location
+    </script>
+  </body>
+</html>

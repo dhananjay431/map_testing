@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet Move Marker Demo</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+  </head>
+  <body>
+    <div id="map" style="height: 400px"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      var map = L.map("map").setView([51.505, -0.09], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map
+      );
+
+      // Create a marker with the initial position
+      var marker = L.marker([51.505, -0.09], { draggable: true }).addTo(map);
+
+      // Function to update marker position when moved
+      function updateMarkerPosition() {
+        var latLng = marker.getLatLng();
+        console.log("Marker moved to: " + latLng.lat + ", " + latLng.lng);
+      }
+
+      // Event listener for marker dragend
+      marker.on("dragend", function (event) {
+        updateMarkerPosition();
+      });
+    </script>
+  </body>
+</html>

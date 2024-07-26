@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- map start -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@3.2.1/dist/maplibre-gl.css"
+    />
+    <script src="https://unpkg.com/maplibre-gl@3.2.1/dist/maplibre-gl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body,
+      #map {
+        height: 100%;
+      }
+      .marker {
+        display: block;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+      }
+    </style>
+    <!-- map end  -->
+    <!-- socket js  -->
+    <script src="./assets/js/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <!-- last_location : {lat: 24.86352, long: 67.28892} -->
+    <script>
+      var _socket = null;
+      function socket_conn(user) {
+        return new Promise(function (a, b) {
+          _socket = io.connect("http://wetrack.pk/gps?userId=" + user, {
+            secure: false,
+            rejectUnauthorized: false,
+            transports: ["websocket", "polling"],
+            upgrade: false,
+          });
+
+          _socket.on("connect", (socket) => {
+            console.log("connected...");
+            a(true);
+          });
+        });
+      }
+      move_clear = null;
+      function imei_conn(imei) {
+        var date = new Date().setHours(0, 0, 0, 0);
+        _socket.emit("initLive", imei, date);
+        _socket.on(imei, function (msg, initData, deviceInfo) {
+          console.log("a user connected 41", msg, initData, deviceInfo);
+
+          //   console.log("GPT=>", x);
+          if (move_clear != undefined) {
+            clearInterval(move_clear);
+          }
+          move(deviceInfo, 500, mark);
+        });
+      }
+      var map = create_map();
+      var mark = create_marker();
+      socket_conn("6459d678280838556b7d6fe5").then(function () {
+        imei_conn("868805065986831");
+      });
+      //   start map
+      function create_map() {
+        return new maplibregl.Map({
+          container: "map",
+          style:
+            "https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+          center: [-65.017, -16.457],
+          zoom: 15,
+        });
+      }
+      function create_marker() {
+        const el = document.createElement("div");
+        el.className = "marker";
+        // el.style.backgroundImage = `url(http://placekitten.com/g/${marker.properties.iconSize.join(
+        //   "/"
+        // )}/)`;
+        el.style.backgroundImage = `url("./assets/50.jpg")`;
+        //  el.style.backgroundImage = `url("./assets/icar.png")`;
+        debugger;
+
+        //
+        console.log(el.style.backgroundImage);
+        el.style.width = "50px";
+        el.style.height = "50px";
+
+        el.addEventListener("click", () => {
+          window.alert(marker.properties.message);
+        });
+
+        // add marker to map
+        var x = new maplibregl.Marker({ element: el })
+          .setLngLat([-65.017, -16.457])
+          .setRotation(50)
+
+          .addTo(map);
+
+        return x;
+      }
+      function animateMarker(marker, _data) {
+        marker
+          .setLngLat([_data.last_location.long, _data.last_location.lat])
+
+          .setRotation(_data.heading)
+          .addTo(map);
+
+        map.flyTo({
+          center: [_data.last_location.long, _data.last_location.lat],
+        });
+      }
+
+      function move(_data, step, marker) {
+        var cnt = 0;
+        var start = {
+          lat: _data.sec_last_location.lat,
+          lng: _data.sec_last_location.long,
+        };
+        var end = {
+          lat: _data.last_location.lat,
+          lng: _data.last_location.long,
+        };
+        var n = step; // the number of coordinates you want
+
+        coordinates = [];
+        for (var i = n - 1; i > 0; i--) {
+          coordinates.push({
+            lat: (start.lat * i) / n + (end.lat * (n - i)) / n,
+            lng: (start.lng * i) / n + (end.lng * (n - i)) / n,
+          });
+        }
+        console.log("coordinates=>", coordinates);
+        move_clear = setInterval(function () {
+          if (
+            coordinates[cnt].lng != undefined &&
+            coordinates[cnt].lat != undefined
+          ) {
+            marker
+              .setLngLat([coordinates[cnt].lng, coordinates[cnt].lat])
+
+              .setRotation(_data.heading)
+              .addTo(map);
+
+            map.flyTo({
+              center: [coordinates[cnt].lng, coordinates[cnt].lat],
+            });
+          }
+
+          if (cnt == step) {
+            cnt = 0;
+          }
+          cnt = cnt + 1;
+        }, 40);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet Moving Car Demo</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+  </head>
+  <body>
+    <div id="map" style="height: 400px"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      var map = L.map("map").setView([51.505, -0.09], 13);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap",
+      }).addTo(map);
+
+      // Create a marker for the car icon
+      var carIcon = L.icon({
+        iconUrl: "./assets/car.png",
+        iconSize: [50, 50],
+        iconAnchor: [50, 100],
+        // iconAnchor: [12, 41],
+        // popupAnchor: [1, -34],
+      });
+
+      // Create a car marker with the initial position and icon
+      var carMarker = L.marker([51.505, -0.09], {
+        icon: carIcon,
+        rotationAngle: 45,
+      }).addTo(map);
+
+      // Sample route for the car to follow
+      var route = [
+        [51.505, -0.09],
+        [51.51, -0.1],
+        [51.52, -0.12],
+        [51.53, -0.15],
+        [51.54, -0.2],
+      ];
+
+      // Index to track the current position in the route
+      var currentRouteIndex = 0;
+
+      // Function to move the car along the route
+      function moveCar() {
+        if (currentRouteIndex < route.length) {
+          //   map.flyTo(route[currentRouteIndex], 8);
+          carMarker.setLatLng(route[currentRouteIndex]);
+          currentRouteIndex++;
+        } else {
+          clearInterval(carMovementInterval);
+        }
+      }
+
+      // Set the car movement interval (adjust the interval time as needed)
+      var carMovementInterval = setInterval(moveCar, 1000);
+    </script>
+  </body>
+</html>

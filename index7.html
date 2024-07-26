@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Animate a marker</title>
+    <meta
+      property="og:description"
+      content="Animate the position of a marker by updating its location on each frame."
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--  leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="./assets/js/leaflet-hash.js"></script>
+    <!--maplibre  -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@3.2.1/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="./assets/css/maplibre-gl-inspect.css" />
+    <script src="https://unpkg.com/maplibre-gl@3.2.1/dist/maplibre-gl.js"></script>
+
+    <script src="./assets/js/maplibre-gl-inspect.min.js"></script>
+    <!--  -->
+    <!-- <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script> -->
+    <!--  -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body,
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var mark = [
+        {
+          _id: "64ba7bc28ef26c58e751eb5c",
+          Device_Name: "ADU-903 (Isb)",
+          Device_ID: "868003035725907",
+          Email_ID: "hello@trackit.com.pk",
+          supAdmin: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+            imageDoc: [
+              "public/images/oneqlikProfilePic/Trackit logo1637662174952.jpeg",
+            ],
+          },
+          Dealer: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+            imageDoc: [
+              "public/images/oneqlikProfilePic/Trackit logo1637662174952.jpeg",
+            ],
+          },
+          token: "F18N$$7x5?p%,.c$",
+          type_of_device: "Tracker",
+          sim_number: "3195775348",
+          user: {
+            _id: "648fe96fe47ff91cc6857097",
+            first_name: "Niaz",
+            last_name: "Ahmad",
+          },
+          SpeedAlert: false,
+          device_model: {
+            _id: "5b3e588f17811f45a47a181e",
+            device_type: "ET300",
+          },
+          expiration_date: "2024-07-20T19:00:00.000Z",
+          vehicleType: {
+            _id: "5ffc5673b20b8b0f2f0b033c",
+            brand: "Suzuki",
+            model: "Alto",
+            iconType: "car",
+          },
+          created_by: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+          },
+          sim_provider: "Zong",
+          SpeedLimit: 150,
+          distanceVariation: "+0",
+          Mileage: "10",
+          __v: 0,
+          ac: null,
+          gpsTracking: "1",
+          gsmSignal: "4",
+          heading: "339",
+          last_device_time: "2023-07-28T06:44:49.000Z",
+          last_idle_at: "2023-07-28T05:28:00.963Z",
+          last_ping_on: "2023-07-28T06:46:10.853Z",
+          last_speed: "0",
+          power: "1",
+          satellites: "7",
+          status_updated_at: "2023-07-28T05:28:12.061Z",
+          currentFuel: null,
+          currentFuelVoltage: null,
+          distFromLastStop: 0,
+          fuel_percent: null,
+          ip: "206.189.83.207",
+          last_speed_zero_at: "2023-07-28T06:44:50.866Z",
+          port: "1155",
+          sec_last_speed: "0",
+          currentRoute: null,
+          lastStoppedAt: "2023-07-28T05:28:12.061Z",
+          today_stopped: 41732064,
+          lastIgnChangeAt: "2023-07-28T05:28:12.071Z",
+          today_ign_on: 54,
+          activated: "0",
+          batteryStatus: "6",
+          battery_percent: "100",
+          last_ACC: "0",
+          last_ACC_change_on: "2023-07-28T05:28:12.070Z",
+          last_ACC_on: "2023-07-28T06:46:10.853Z",
+          t_idling: 90106,
+          today_ign_off: 53,
+          timeAtLastStop: 37530332,
+          timezone: "Asia/Karachi",
+          currentToll: null,
+          currentTollName: null,
+          currentPOI: null,
+          currentPOIName: null,
+          sb3CurrentPOI: null,
+          today_running: 189930,
+          lastOverStoppedAlertOn: "2023-07-28T06:44:50.877Z",
+          t_noGps: 0,
+          t_ofr: 0,
+          t_running: 0,
+          t_stopped: 0,
+          kycStatus: "Pending",
+          autoPark: false,
+          speedChart: {
+            ">100": 0,
+            "80-100": 16,
+            "60-80": 177,
+            "40-60": 825,
+            "20-40": 1317,
+            "0-20": 2455,
+          },
+          doMap: {
+            ignitionLock: "do1",
+          },
+          dIMap: {
+            di3: "door",
+            di2: "ac",
+            di1: "ignition",
+          },
+          sos: false,
+          capacity: 30,
+          today_start_location: {
+            lat: 33.49390666666667,
+            long: 73.10263777777777,
+          },
+          tripType: 1,
+          today_trips: 1,
+          today_maxspeed: 0,
+          today_routeViolations: 0,
+          today_overspeeds: 0,
+          overspeeding: false,
+          sosTo: [],
+          ignitionSource: "ACC",
+          deviceImage: [],
+          accountSuspended: false,
+          License: "Yearly",
+          active: true,
+          arm: "0",
+          ignitionLock: "0",
+          created_on: "2023-07-21T12:36:18.862Z",
+          engine_status: true,
+          currentTripStatus: "UNASSIGNED",
+          imageDoc: [],
+          fuelMeasurement: "GPS",
+          snaps: [],
+          fuel_unit: "L",
+          maxStoppageAlerted: false,
+          maxStoppageAlert: false,
+          status: "STOPPED",
+          maxSpeed: 32,
+          tripCount: 0,
+          total_odo: 484.4023646236314,
+          today_odo: 0.7692971853300333,
+          last_loc: {
+            coordinates: [73.1025811111111, 33.49391166666667],
+            type: "Point",
+          },
+          sec_last_location: {
+            lat: 33.49391166666667,
+            long: 73.1025811111111,
+          },
+          last_location: {
+            lat: 33.49391166666667,
+            long: 73.1025811111111,
+          },
+          iconType: "car",
+          Shared: [],
+          overIdleLimit: 30,
+          overStoppedLimit: 60,
+          towAlert: false,
+          theftAlert: false,
+          maintenance: false,
+          HardWare: "3195775348",
+          playPause: true,
+          checked: true,
+        },
+        {
+          _id: "6496a9e3945df6f3fc279320",
+          Device_Name: "MLM-9591 (Isb)",
+          Device_ID: "868003035017420",
+          Email_ID: "hello@trackit.com.pk",
+          supAdmin: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+            imageDoc: [
+              "public/images/oneqlikProfilePic/Trackit logo1637662174952.jpeg",
+            ],
+          },
+          Dealer: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+            imageDoc: [
+              "public/images/oneqlikProfilePic/Trackit logo1637662174952.jpeg",
+            ],
+          },
+          token: "Z2ZdnQ::/m@JnQr7",
+          type_of_device: "Tracker",
+          sim_number: "3175674392",
+          user: {
+            _id: "648fe96fe47ff91cc6857097",
+            first_name: "Niaz",
+            last_name: "Ahmad",
+          },
+          SpeedAlert: false,
+          device_model: {
+            _id: "5b3e588f17811f45a47a181e",
+            device_type: "ET300",
+          },
+          expiration_date: "2024-06-23T19:00:00.000Z",
+          vehicleType: {
+            _id: "5fda2ac430ea0f317f58080b",
+            brand: "SUZUKI",
+            model: "MEHRAN",
+            iconType: "car",
+          },
+          created_by: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+          },
+          sim_provider: "Zong",
+          SpeedLimit: 150,
+          distanceVariation: "+0",
+          Mileage: "10",
+          __v: 0,
+          ac: null,
+          currentFuel: null,
+          currentFuelVoltage: null,
+          distFromLastStop: 0,
+          fuel_percent: null,
+          gpsTracking: "1",
+          gsmSignal: "4",
+          heading: "326",
+          ip: "206.189.83.207",
+          last_device_time: "2023-07-28T06:43:37.000Z",
+          last_ping_on: "2023-07-28T06:45:09.171Z",
+          last_speed: "0",
+          last_speed_zero_at: "2023-07-28T06:43:49.817Z",
+          port: "1155",
+          power: "1",
+          satellites: "7",
+          sec_last_speed: "0",
+          currentPOI: null,
+          currentPOIName: null,
+          sb3CurrentPOI: null,
+          currentRoute: null,
+          currentToll: null,
+          currentTollName: null,
+          last_idle_at: "2023-07-27T20:40:30.176Z",
+          status_updated_at: "2023-07-27T20:42:01.013Z",
+          lastIgnChangeAt: "2023-07-27T20:42:01.021Z",
+          today_ign_off: 322,
+          activated: "0",
+          batteryStatus: "3",
+          battery_percent: "60",
+          last_ACC: "0",
+          last_ACC_change_on: "2023-07-27T20:42:01.019Z",
+          last_ACC_on: "2023-07-28T06:45:09.171Z",
+          lastStoppedAt: "2023-07-27T20:42:01.013Z",
+          today_stopped: 35809543,
+          lastOverStoppedAlertOn: "2023-07-28T06:43:49.845Z",
+          today_ign_on: 321,
+          timeAtLastStop: 2683273,
+          t_idling: 532089,
+          timezone: "Asia/Karachi",
+          today_running: 5599069,
+          t_noGps: 0,
+          t_ofr: 0,
+          t_running: 0,
+          t_stopped: 0,
+          lastOverIdleAlertOn: "2023-07-02T09:03:13.474Z",
+          kycStatus: "Pending",
+          autoPark: false,
+          speedChart: {
+            ">100": 218,
+            "80-100": 997,
+            "60-80": 2571,
+            "40-60": 4729,
+            "20-40": 5389,
+            "0-20": 9079,
+          },
+          doMap: {
+            ignitionLock: "do1",
+          },
+          dIMap: {
+            di3: "door",
+            di2: "ac",
+            di1: "ignition",
+          },
+          sos: false,
+          capacity: 30,
+          today_start_location: {
+            lat: 33.46688833333333,
+            long: 73.20203666666667,
+          },
+          tripType: 1,
+          today_trips: 1,
+          today_maxspeed: 0,
+          today_routeViolations: 0,
+          today_overspeeds: 0,
+          overspeeding: false,
+          sosTo: [],
+          ignitionSource: "ACC",
+          deviceImage: [],
+          accountSuspended: false,
+          License: "Yearly",
+          active: true,
+          arm: "0",
+          ignitionLock: "0",
+          created_on: "2023-06-24T08:31:31.759Z",
+          engine_status: true,
+          currentTripStatus: "UNASSIGNED",
+          imageDoc: [],
+          fuelMeasurement: "GPS",
+          snaps: [],
+          fuel_unit: "L",
+          maxStoppageAlerted: false,
+          maxStoppageAlert: false,
+          status: "STOPPED",
+          maxSpeed: 110,
+          tripCount: 0,
+          total_odo: 4997.719394845426,
+          today_odo: 195.25828681991493,
+          last_loc: {
+            coordinates: [73.86282555555556, 32.814772777777776],
+            type: "Point",
+          },
+          sec_last_location: {
+            lat: 32.814772777777776,
+            long: 73.86282555555556,
+          },
+          last_location: {
+            lat: 32.814772777777776,
+            long: 73.86282555555556,
+          },
+          iconType: "car",
+          Shared: [],
+          overIdleLimit: 30,
+          overStoppedLimit: 60,
+          towAlert: false,
+          theftAlert: false,
+          maintenance: false,
+          HardWare: "3175674392",
+          playPause: true,
+          checked: true,
+        },
+        {
+          _id: "648fe8f2e47ff91cc6857095",
+          Device_Name: "AFK-52 (Isb)",
+          Device_ID: "352312096645406",
+          Email_ID: "hello@trackit.com.pk",
+          supAdmin: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+            imageDoc: [
+              "public/images/oneqlikProfilePic/Trackit logo1637662174952.jpeg",
+            ],
+          },
+          Dealer: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+            imageDoc: [
+              "public/images/oneqlikProfilePic/Trackit logo1637662174952.jpeg",
+            ],
+          },
+          token: '<K."#bO%^t&#oN9^',
+          type_of_device: "Tracker",
+          sim_number: "3140859354",
+          user: {
+            _id: "648fe96fe47ff91cc6857097",
+            first_name: "Niaz",
+            last_name: "Ahmad",
+          },
+          SpeedAlert: false,
+          device_model: {
+            _id: "5ffc4af50e8e130f485b74f9",
+            device_type: "BT900",
+          },
+          expiration_date: "2024-06-18T19:00:00.000Z",
+          vehicleType: {
+            _id: "5fb7d28ec35dc658603fa055",
+            brand: "HONDA",
+            model: "CIVIC",
+            iconType: "car",
+          },
+          created_by: {
+            _id: "5ffc3826b7947f0de5da6b21",
+            first_name: "Trackit",
+            last_name: "Tracker",
+          },
+          sim_provider: "Zong",
+          SpeedLimit: 150,
+          distanceVariation: "+0",
+          Mileage: "10",
+          __v: 0,
+          ac: null,
+          gpsTracking: "1",
+          gsmSignal: "0",
+          heading: "336",
+          last_device_time: "2023-07-27T19:44:25.000Z",
+          last_idle_at: "2023-07-27T19:35:21.659Z",
+          last_ping_on: "2023-07-27T19:44:35.859Z",
+          last_speed: "0",
+          power: "1",
+          satellites: "14",
+          status_updated_at: "2023-07-27T20:45:00.021Z",
+          currentFuel: null,
+          currentFuelVoltage: null,
+          distFromLastStop: 14.99922144390207,
+          fuel_percent: null,
+          ip: "206.189.83.207",
+          last_speed_zero_at: "2023-07-27T19:41:19.429Z",
+          port: "1155",
+          sec_last_speed: "8",
+          currentRoute: null,
+          lastStoppedAt: "2023-07-27T18:58:01.773Z",
+          today_stopped: 0,
+          timezone: "Asia/Karachi",
+          currentToll: null,
+          currentTollName: null,
+          currentPOI: null,
+          currentPOIName: null,
+          sb3CurrentPOI: null,
+          t_idling: 601457,
+          today_running: 3194726,
+          lastIgnChangeAt: "2023-07-27T18:58:01.773Z",
+          today_ign_on: 297,
+          activated: "0",
+          batteryStatus: "240",
+          battery_percent: "100",
+          last_ACC: "1",
+          last_ACC_change_on: "2023-07-27T18:34:28.077Z",
+          last_ACC_on: "2023-07-27T19:44:35.869Z",
+          today_ign_off: 296,
+          timeAtLastStop: 528240,
+          door: "0",
+          last_overspeed_time: "2023-07-18T09:59:04.036Z",
+          lastOverStoppedAlertOn: "2023-07-27T12:05:30.011Z",
+          t_noGps: 0,
+          t_ofr: 0,
+          t_running: 0,
+          t_stopped: 0,
+          lastOverIdleAlertOn: "2023-06-27T09:25:14.423Z",
+          kycStatus: "Pending",
+          autoPark: false,
+          speedChart: {
+            ">100": 1242,
+            "80-100": 770,
+            "60-80": 2477,
+            "40-60": 6950,
+            "20-40": 16460,
+            "0-20": 15506,
+          },
+          doMap: {
+            ignitionLock: "do1",
+          },
+          dIMap: {
+            di3: "door",
+            di2: "ac",
+            di1: "ignition",
+          },
+          sos: false,
+          capacity: 30,
+          today_start_location: {
+            lat: 33.653462777777776,
+            long: 72.968745,
+          },
+          tripType: 1,
+          today_trips: 0,
+          today_maxspeed: 0,
+          today_routeViolations: 0,
+          today_overspeeds: 0,
+          overspeeding: false,
+          sosTo: [],
+          ignitionSource: "ACC",
+          deviceImage: [],
+          accountSuspended: false,
+          License: "Yearly",
+          active: true,
+          arm: "0",
+          ignitionLock: "0",
+          created_on: "2023-06-19T05:34:42.491Z",
+          engine_status: true,
+          currentTripStatus: "UNASSIGNED",
+          imageDoc: [],
+          fuelMeasurement: "GPS",
+          snaps: [],
+          fuel_unit: "L",
+          maxStoppageAlerted: false,
+          maxStoppageAlert: false,
+          status: "OUT OF REACH",
+          maxSpeed: 41,
+          tripCount: 0,
+          total_odo: 10669.724060092793,
+          today_odo: 11.587092787865853,
+          last_loc: {
+            coordinates: [72.96894944444445, 33.653155],
+            type: "Point",
+          },
+          sec_last_location: {
+            lat: 33.653058333333334,
+            long: 72.9690138888889,
+          },
+          last_location: {
+            lat: 33.653155,
+            long: 72.96894944444445,
+          },
+          iconType: "car",
+          Shared: [],
+          overIdleLimit: 30,
+          overStoppedLimit: 60,
+          towAlert: false,
+          theftAlert: false,
+          maintenance: false,
+          HardWare: "3140859354",
+          playPause: true,
+          checked: true,
+        },
+      ];
+      function setZoomAndCenter(map, zoomLevel = 10, latLng = "") {
+        if (map) {
+          if (!latLng && this.allDevices.length) {
+            map.setCenter(this.allDevices[0].last_loc.coordinates);
+          } else if (latLng) {
+            map.setCenter(latLng);
+          }
+          map.zoomTo(zoomLevel, {
+            duration: 2000,
+          });
+        }
+      }
+      function drawMarker(device) {
+        debugger;
+        const marker = {
+          type: "Feature",
+          properties: {
+            message: "Not found",
+            iconSize: [48, 48],
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [27.51, 77.01],
+          },
+        };
+        if (device.iconType == "bus") {
+          marker.properties.iconSize = [25, 48];
+        }
+        marker.properties.message = device.Device_Name;
+        marker.geometry.coordinates = device.last_loc.coordinates;
+        let url = "/assets/car.png";
+        const el = document.createElement("div");
+        const width = marker.properties.iconSize[0];
+        const height = marker.properties.iconSize[1];
+
+        const elImg = document.createElement("div");
+        const label = document.createElement("div");
+
+        label.innerHTML = `<span class="open-map-label">${device.Device_Name}</span>`;
+        el.appendChild(label);
+        el.className = "marker";
+        elImg.style.backgroundImage = `url(${url})`;
+        el.style.width = `${width}px`;
+        el.style.height = `${height}px`;
+        el.classList.add("marker-map-section");
+        elImg.classList.add("marker-mapi-section");
+        el.style.backgroundSize = "100%";
+
+        let rotationDegree = roatedImage(device.heading);
+        elImg.id = "marker_" + device.Device_ID;
+        elImg.style.transform = `rotateZ(${rotationDegree}deg)`;
+        el.appendChild(elImg);
+        //el.rotation =
+        el.addEventListener("click", () => {});
+
+        // Add markers to the map.
+        // if (!this.markersList[device.Device_ID] && this.map) {
+        if (true) {
+          let popupContent = {
+            Device_Name: device.Device_Name,
+            lastUpdate: device.last_ping_on,
+            gpsTracking: device.gpsTracking,
+            gsm_signal: device.gsmSignal,
+            DriverNumber: device.contact_number,
+            DriverName: device.driver_name,
+            last_speed: device.last_speed,
+            status_updated_at: device.status_updated_at,
+          };
+          let popup = new maplibregl.Popup({ offset: 25 })
+            .setHTML(getPopupHTML())
+            .setMaxWidth("400px");
+          let mapMarker = new maplibregl.Marker(el)
+            .setLngLat(marker.geometry.coordinates)
+            .setPopup(popup)
+            .setRotation(rotationDegree)
+            .addTo(map);
+
+          //   this.markersList[device.Device_ID] = {
+          //     marker: mapMarker,
+          //     popup: popup,
+          //     popupContent: popupContent,
+          //     rStatus: device.status,
+          //   };
+        }
+      }
+      function getPopupHTML(device) {
+        if (device == undefined) {
+          device = {
+            Device_Name: "",
+            lastUpdate: "",
+            gpsTracking: null,
+            gsm_signal: "",
+            DriverNumber: "",
+            DriverName: "",
+            last_speed: "",
+            status_updated_at: "",
+          };
+        }
+        return JSON.stringify(device);
+      }
+      function getStatusDuration(since) {
+        var arrival_time = new Date(since);
+        var curr_time = new Date();
+        var fd = new Date(arrival_time).getTime();
+        var td = curr_time.getTime();
+        var timedev_status_difference = td - fd;
+        var total_min = timedev_status_difference / 60000;
+        var hours = total_min / 60;
+        var rhours = Math.floor(hours);
+        var minutes = (hours - rhours) * 60;
+        var rminutes = Math.round(minutes);
+
+        var Durations = rhours + " " + "hrs" + " " + rminutes + " " + "min";
+        if (since == undefined) {
+          return "";
+        } else {
+          if (status == undefined) {
+            var status_toShow = "NA";
+          } else {
+            var status_toShow = status + " " + "Since" + " " + Durations;
+          }
+
+          return status_toShow;
+        }
+      }
+
+      //   start
+      if (maplibregl.getRTLTextPluginStatus() === "unavailable") {
+        maplibregl.setRTLTextPlugin(
+          "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"
+        );
+      }
+      //style: "./assets/js/json/style.json",
+      const map = new maplibregl.Map({
+        container: "map",
+        style:
+          "https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+        hash: true,
+        maplibreLogo: true,
+        center: [74.2049957, 19.5781972],
+        zoom: 15,
+      });
+
+      map.addControl(
+        new maplibregl.NavigationControl({
+          visualizePitch: true,
+          showZoom: true,
+          showCompass: true,
+        })
+      );
+      map.addControl(
+        new MaplibreInspect({
+          showMapPopupOnHover: false,
+          showInspectMapPopupOnHover: false,
+          selectThreshold: 5,
+        })
+      );
+
+      setTimeout(() => {
+        for (var i = 0; i < mark.length; i++) {
+          drawMarker(mark[i]);
+        }
+      }, 10);
+
+      setTimeout(function () {
+        new L.Hash(map);
+      }, 100);
+
+      function roatedImage(degree, minus = 0) {
+        return ((degree ? degree - minus : 0) * Math.PI) / 180;
+      }
+    </script>
+  </body>
+</html>
